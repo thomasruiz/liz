@@ -1,7 +1,7 @@
 import * as chai from 'chai'
-import { Message } from '../../src/Message';
-import { HandlerType } from '../../src/Handlers/HandlerType';
-import { NoopHandler } from '../../src/Handlers/NoopHandler';
+import { Message } from '../../src/Message'
+import { HandlerType } from '../../src/Handlers/HandlerType'
+import { NoopHandler } from '../../src/Handlers/NoopHandler'
 
 const expect = chai.expect
 

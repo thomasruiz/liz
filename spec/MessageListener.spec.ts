@@ -8,7 +8,7 @@ import { MessageParser } from '../src/MessageParser'
 import { Throttler } from '../src/Throttler'
 import { Message } from '../src/Message'
 import { HandlerType } from '../src/Handlers/HandlerType'
-import { Bot } from '../src/Bot';
+import { Bot } from '../src/Bot'
 
 chai.use(sinonChai)
 

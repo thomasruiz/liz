@@ -1,6 +1,6 @@
-import { HandlerType } from './Handlers/HandlerType';
-import { Message } from './Message';
-import { Bot } from './Bot';
+import { HandlerType } from './Handlers/HandlerType'
+import { Message } from './Message'
+import { Bot } from './Bot'
 
 export class MessageParser {
     constructor(private bot: Bot) {

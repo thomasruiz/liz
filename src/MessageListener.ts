@@ -1,4 +1,4 @@
-import { Bot } from './Bot';
+import { Bot } from './Bot'
 import { Message } from './Message'
 import { MessageParser } from './MessageParser'
 import { Throttler } from './Throttler'

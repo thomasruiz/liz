@@ -1,8 +1,8 @@
 import RtmClient = Slack.RtmClient
 import RtmClientConstructor = Slack.RtmClientConstructor
-import { MessageListener } from './MessageListener';
-import { MessageParser } from './MessageParser';
-import { Throttler } from './Throttler';
+import { MessageListener } from './MessageListener'
+import { MessageParser } from './MessageParser'
+import { Throttler } from './Throttler'
 
 export class Bot {
     private me: any
@@ -26,8 +26,8 @@ export class Bot {
 
     sendDirectMessage(message: string, to: string) {
         const user = this.rtm.dataStore.getUserById(to)
-        const dm = this.rtm.dataStore.getDMByName(user.name);
-        this.sendMessage(message, dm.id);
+        const dm = this.rtm.dataStore.getDMByName(user.name)
+        this.sendMessage(message, dm.id)
     }
 
     private initialize(rtmStartData: any) {

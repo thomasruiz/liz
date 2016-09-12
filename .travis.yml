@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "6"
+  - "6.1"
+  - "5.11"
+
+before_install:
+  - npm install -g typescript@1.8
+
+script:
+  - typings install
+  - npm test
+
+after_success:
+  - npm run coverage && codecov -f coverage/*.json
+  - bash <(curl -s https://codecov.io/bash)

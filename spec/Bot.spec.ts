@@ -1,13 +1,13 @@
-import { Bot } from '../src/Bot';
-import * as slackClient from '@slack/client';
-import * as chai from 'chai';
-import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
+import { Bot } from '../src/Bot'
+import * as slackClient from '@slack/client'
+import * as chai from 'chai'
+import * as sinon from 'sinon'
+import * as sinonChai from 'sinon-chai'
 import RtmClient = Slack.RtmClient
 import RtmClientConstructor = Slack.RtmClientConstructor
 import SinonMock = Sinon.SinonMock
-import SinonSpy = Sinon.SinonSpy;
-import SinonStub = Sinon.SinonStub;
+import SinonSpy = Sinon.SinonSpy
+import SinonStub = Sinon.SinonStub
 
 chai.use(sinonChai)
 
@@ -18,7 +18,7 @@ describe('Liz Bot', () => {
     let start: SinonSpy, on: SinonStub, sendMessage: SinonSpy, getUserById: SinonStub, getDMByName: SinonStub
 
     beforeEach(() => {
-        const rtm = <RtmClientConstructor> <any> (() => rtmClient);
+        const rtm = <RtmClientConstructor> <any> (() => rtmClient)
         start = sinon.spy()
         on = sinon.stub()
         sendMessage = sinon.spy()

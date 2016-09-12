@@ -1,6 +1,6 @@
-import { Handler } from './Handler';
-import { Bot } from '../Bot';
-import { Message } from '../Message';
+import { Handler } from './Handler'
+import { Bot } from '../Bot'
+import { Message } from '../Message'
 
 export class InteractionHandler implements Handler {
     constructor(private bot: Bot) {
