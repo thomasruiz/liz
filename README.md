@@ -12,7 +12,7 @@ $ npm run build && SLACK_API_TOKEN=your_api_token nodejs index.js
 
  - [x] Connect to a slack team
  - [x] Listen to messages
- - [ ] Answer to mentions
+ - [x] Answer to mentions
  - [ ] Threshold usage
  - [ ] Administrators rights
  - [ ] Persistent storage
