@@ -4,6 +4,7 @@
   "description": "A lovely bot for the Larachat community",
   "main": "index.js",
   "scripts": {
+    "postinstall": "typings install",
     "build": "tsc",
     "test": "npm run build && ./node_modules/.bin/mocha --opts mocha.opts",
     "coverage": "npm run build && node ./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha -- --opts mocha.opts && ./node_modules/.bin/remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html"
@@ -15,12 +16,15 @@
     "typescript": "^1.8.10"
   },
   "devDependencies": {
+    "codecov": "^1.0.1",
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "remap-istanbul": "^0.6.4",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
-    "ts-node": "^1.3.0"
+    "ts-node": "^1.3.0",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.3"
   }
 }
