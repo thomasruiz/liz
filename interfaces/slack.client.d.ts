@@ -44,6 +44,6 @@ declare namespace Slack {
 
 declare const slack: Slack.Client
 
-declare module "@slack/client" {
+declare module '@slack/client' {
     export = slack
 }
