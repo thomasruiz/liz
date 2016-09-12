@@ -1,18 +1,16 @@
-import { HandlerType } from './Handlers/HandlerType'
-
 export class Message {
-    constructor (private _type: HandlerType, private _message: any) {
-    }
-
-    get type() {
-        return this._type
+    constructor (private _message: any) {
     }
 
     get content() {
         return this._message.text
     }
 
-    get authorId() {
+    get user() {
         return this._message.user
+    }
+
+    get channel() {
+        return this._message.channel
     }
 }

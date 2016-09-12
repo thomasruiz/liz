@@ -1,7 +1,6 @@
 import RtmClient = Slack.RtmClient
 import RtmClientConstructor = Slack.RtmClientConstructor
 import { MessageListener } from './MessageListener'
-import { MessageParser } from './MessageParser'
 import { Throttler } from './Throttler'
 
 export class Bot {
@@ -12,7 +11,7 @@ export class Bot {
     }
 
     start(token: string, config: any) {
-        const listener = this.listener.withBot(this, new MessageParser(this), new Throttler)
+        const listener = this.listener.withBot(this, new Throttler)
         this.rtm = new this.rtmClient(token, config)
 
         this.rtm.start()
@@ -36,6 +35,10 @@ export class Bot {
 
     get id(): string {
         return this.me.id
+    }
+
+    get refId(): string {
+        return `<@${this.id}>`
     }
 
     get name(): string {
