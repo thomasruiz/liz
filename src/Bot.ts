@@ -29,6 +29,18 @@ export class Bot {
         this.sendMessage(message, dm.id)
     }
 
+    getRealUserName(receiver: string): string {
+        if (this.isId(receiver)) {
+            receiver = '@' + this.rtm.dataStore.getUserById(receiver.substring(2, receiver.length - 1)).name
+        }
+
+        return receiver
+    }
+
+    private isId(value: string): boolean {
+        return !!value.match(/<@[^>]+>/)
+    }
+
     private initialize(rtmStartData: any) {
         this.me = rtmStartData.self
     }

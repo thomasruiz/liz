@@ -4,13 +4,15 @@ import { Throttler } from './Throttler'
 import { Handler } from './Handlers/Handler'
 import { SimplePingHandler } from './Handlers/SimplePingHandler'
 import IThenable = Promise.IThenable
+import { SlapHandler } from './Handlers/SlapHandler'
 
 export class MessageListener {
     private handlers: Handler[]
 
     constructor(private bot: Bot, private throttler: Throttler) {
         this.handlers = [
-            new SimplePingHandler(bot)
+            new SimplePingHandler(bot),
+            new SlapHandler(bot)
         ]
     }
 
