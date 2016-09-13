@@ -57,19 +57,6 @@ describe('Liz Bot', () => {
         })
     })
 
-    describe('getRealUserName', () => {
-        it('should return the string passed if it doesn\'t match a slack id', () => {
-            bot.start('foo', {})
-            expect(bot.getRealUserName('test')).to.equal('test')
-        })
-
-        it('should retrieve the username of a slack id', () => {
-            bot.start('foo', {})
-            getUserById.withArgs('UTEST').returns({name: 'test'})
-            expect(bot.getRealUserName('<@UTEST>')).to.equal('@test')
-        })
-    })
-
     describe('initializer and getters', () => {
         it('should retrieve self data', () => {
             on.withArgs(slackClient.CLIENT_EVENTS.RTM.AUTHENTICATED).yields({self: {id: 'BID', name: 'liz'}})

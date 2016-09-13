@@ -11,13 +11,23 @@ export class SlapHandler implements Handler {
     }
 
     handle(message: Message): void {
-        this.bot.sendMessage(`_slaps ${this.receiver(message)} around a bit with a large trout._`, message.channel)
+        let receiver = this.receiver(message)
+        let slap = ''
+
+        if (receiver.match(new RegExp(`^<@${this.bot.id}>$`)) || receiver === this.bot.name) {
+            receiver = `<@${message.user}>`
+            slap = 'Nice try.\n'
+        }
+
+        slap += `_slaps ${receiver} around a bit with a large trout._`
+
+        this.bot.sendMessage(slap, message.channel)
     }
 
     private receiver(message: Message): string {
         const regex = /^[^ ]+ [^ ]+ ([^ ]+)/
 
         // e.g "@liz slaps user" catches "user"
-        return this.bot.getRealUserName(regex.exec(message.content)[1])
+        return regex.exec(message.content)[1]
     }
 }

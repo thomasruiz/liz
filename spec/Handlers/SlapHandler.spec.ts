@@ -27,13 +27,18 @@ describe('SlapHandler', () => {
     describe('handle', () => {
         it('should answer with the slapping message', () => {
             const sendMessage: SinonSpy = sinon.spy()
-            const getRealUserName: SinonStub = sinon.stub()
-            const handler: SlapHandler = new SlapHandler(<Bot> <any> {sendMessage, getRealUserName})
-
-            getRealUserName.withArgs('you').returns('you')
+            const handler: SlapHandler = new SlapHandler(<Bot> <any> {sendMessage})
 
             handler.handle(new Message({text: '@liz slap you'}))
             expect(sendMessage).to.have.been.calledWith('_slaps you around a bit with a large trout._')
+        })
+
+        it('should not be able to slap itself', () => {
+            const sendMessage: SinonSpy = sinon.spy()
+            const handler: SlapHandler = new SlapHandler(<Bot> <any> {sendMessage, name: 'liz'})
+
+            handler.handle(new Message({text: '@liz slap liz', user: 'UFOO'}))
+            expect(sendMessage).to.have.been.calledWith('Nice try.\n_slaps <@UFOO> around a bit with a large trout._')
         })
     })
 })
