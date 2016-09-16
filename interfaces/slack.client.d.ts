@@ -21,6 +21,7 @@ declare namespace Slack {
         start (): Ipromise
         on (event: string, listener: Function): this
         sendMessage (message: string, receiverId: string, callback?: Function): Ipromise
+        send (data: any): any
     }
 
     interface DataStore {

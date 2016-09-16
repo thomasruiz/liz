@@ -1,39 +1,51 @@
 import { Bot } from './Bot'
 import { Message } from './Message'
-import { Throttler } from './Throttler'
 import { Handler } from './Handlers/Handler'
 import { SimplePingHandler } from './Handlers/SimplePingHandler'
-import IThenable = Promise.IThenable
 import { SlapHandler } from './Handlers/SlapHandler'
+import { LizError } from './LizError'
+import IThenable = Promise.IThenable
 
 export class MessageListener {
     private handlers: Handler[]
 
-    constructor(private bot: Bot, private throttler: Throttler) {
+    constructor(private bot: Bot) {
         this.handlers = [
             new SimplePingHandler(bot),
             new SlapHandler(bot)
         ]
     }
 
-    static withBot(bot: Bot, throttler: Throttler): MessageListener {
-        return new MessageListener(bot, throttler)
+    static withBot(bot: Bot): MessageListener {
+        return new MessageListener(bot)
     }
 
     handle(message: any): IThenable<void> {
         return (new Promise((resolve) => resolve(new Message(message))))
-            .then(this.throttler.throttle.bind(this.throttler))
             .then((message: Message) => {
                 for (const handler of this.handlers) {
                     if (handler.understands(message)) {
-                        handler.handle(message)
+                        if (!handler.throttled(message.user)) {
+                            return handler.handle(message)
+                        } else {
+                            throw new LizError('Please be gentle, don\'t abuse me.', message.user)
+                        }
                     }
                 }
             })
-            .catch((error: Error) => {
-                if (!error.message.match(/^__silent__/)) {
-                    this.bot.sendDirectMessage(error.message, message.user)
+            .catch((error: LizError) => {
+                if (error.user) {
+                    if (!error.message.match(/^__silent__/)) {
+                        this.bot.sendDirectMessage(error.message, error.user)
+                    }
+                } else {
+                    // system error, we don't want those silent
+                    throw error
                 }
             })
+    }
+
+    public addHandler(handler: Handler): void {
+        this.handlers.push(handler)
     }
 }

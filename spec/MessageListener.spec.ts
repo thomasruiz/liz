@@ -1,12 +1,12 @@
 import * as chai from 'chai'
 import * as sinon from 'sinon'
 import * as sinonChai from 'sinon-chai'
+import { MessageListener } from '../src/MessageListener'
+import { Bot } from '../src/Bot'
 import SinonStub = Sinon.SinonStub
 import SinonSpy = Sinon.SinonSpy
-import { MessageListener } from '../src/MessageListener'
-import { Throttler } from '../src/Throttler'
-import { Message } from '../src/Message'
-import { Bot } from '../src/Bot'
+import { Handler } from '../src/Handlers/Handler'
+import { LizError } from '../src/LizError'
 
 chai.use(sinonChai)
 
@@ -15,31 +15,26 @@ const expect = chai.expect
 describe('MessageListener', () => {
     describe('factories', () => {
         it('shouldBuildWithAnInstanceOfRtmClient', () => {
-            const listener = MessageListener.withBot(<Bot> <any> 'bot', <any> 'throttler')
-            expect(listener).to.eql(new MessageListener(<Bot> <any> 'bot', <any> 'throttler'))
+            const listener = MessageListener.withBot(<Bot> <any> 'bot')
+            expect(listener).to.eql(new MessageListener(<Bot> <any> 'bot'))
         })
     })
 
     describe('handle', () => {
-        let listener: MessageListener, bot: Bot, throttler: Throttler
-        let sendMessage: SinonSpy, sendDirectMessage: SinonSpy, throttle: SinonStub
+        let listener: MessageListener, bot: Bot
+        let sendMessage: SinonSpy, sendDirectMessage: SinonSpy
 
         beforeEach(() => {
             sendMessage = sinon.spy()
             sendDirectMessage = sinon.spy()
-            throttle = sinon.stub()
 
             bot = <Bot> <any> {sendMessage, sendDirectMessage, refId: '@liz'}
-            throttler = <Throttler> <any> {throttle}
 
-            listener = new MessageListener(bot, throttler)
+            listener = new MessageListener(bot)
         })
 
         it('should pass the message through the pipeline', (done) => {
             const rawMessage: any = {text: 'ping @liz', channel: 'me'}
-            const parsedMessage: Message = new Message(rawMessage)
-
-            throttle.withArgs(parsedMessage).returns(parsedMessage)
 
             listener.handle(rawMessage).then(() => {
                 expect(sendMessage).to.have.been.calledWith('Pong!', 'me')
@@ -47,11 +42,22 @@ describe('MessageListener', () => {
             }, (err) => done(err))
         })
 
+        it('should throw an error when throttle happens', (done) => {
+            const rawMessage: any = {user: 'a', text: 'bar'}
+            listener.addHandler(<Handler> <any> {understands: () => true, throttled: () => true})
+
+            listener.handle(rawMessage).then(() => {
+                expect(bot.sendDirectMessage).to.have.been.calledWithMatch(/abuse/, 'a')
+                done()
+            }, (err) => done(err))
+        })
+
         describe('when an error happens', () => {
             it('should send an error message to the user', (done) => {
-                const rawMessage: any = {user: 'a'}
-
-                throttle.withArgs(rawMessage).throws(new Error('foo'))
+                const rawMessage: any = {user: 'a', text: 'bar'}
+                listener.addHandler(<Handler> <any> {understands: () => true, throttled: () => false, handle: () => {
+                    throw new LizError('foo', 'a')
+                }})
 
                 listener.handle(rawMessage).then(() => {
                     expect(bot.sendDirectMessage).to.have.been.calledWith('foo', 'a')
@@ -60,14 +66,15 @@ describe('MessageListener', () => {
             })
 
             it('should not do anything if the error starts with __silent__', (done) => {
-                const rawMessage: any = {user: 'a'}
-
-                throttle.withArgs(rawMessage).throws(new Error('__silent__ foo'))
+                const rawMessage: any = {user: 'a', text: '__TEST__ throw silence bar'}
+                listener.addHandler(<Handler> <any> {understands: () => true, throttled: () => false, handle: () => {
+                    throw new LizError('__silent__ foo', 'a')
+                }})
 
                 listener.handle(rawMessage).then(() => {
                     expect(bot.sendDirectMessage).to.not.have.been.called
                     done()
-                }, (err) => done(err))
+                })
             })
         })
     })

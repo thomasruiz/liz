@@ -5,4 +5,4 @@ import { MessageListener } from './src/MessageListener'
 
 const bot = new Bot(slackClient.RtmClient, slackClient.RTM_EVENTS, slackClient.CLIENT_EVENTS, MessageListener)
 
-bot.start(process.env.SLACK_API_TOKEN, {logLevel: 'debug'})
+bot.start(process.env.SLACK_API_TOKEN, {})

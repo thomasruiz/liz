@@ -62,6 +62,7 @@ describe('Liz Bot', () => {
             on.withArgs(slackClient.CLIENT_EVENTS.RTM.AUTHENTICATED).yields({self: {id: 'BID', name: 'liz'}})
             bot.start('foo', {})
             expect(bot.id).to.equal('BID')
+            expect(bot.refId).to.equal('<@BID>')
             expect(bot.name).to.equal('liz')
         })
     })

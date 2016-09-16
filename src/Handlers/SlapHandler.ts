@@ -2,10 +2,7 @@ import { Handler } from './Handler'
 import { Message } from '../Message'
 import { Bot } from '../Bot'
 
-export class SlapHandler implements Handler {
-    constructor(private bot: Bot) {
-    }
-
+export class SlapHandler extends Handler {
     understands(message: Message): boolean {
         return !!message.content.match(new RegExp(`^${this.bot.refId} slap .+`))
     }
@@ -22,6 +19,8 @@ export class SlapHandler implements Handler {
         slap += `_slaps ${receiver} around a bit with a large trout._`
 
         this.bot.sendMessage(slap, message.channel)
+
+        this.throttle(message.user, 10)
     }
 
     private receiver(message: Message): string {
