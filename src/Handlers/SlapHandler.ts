@@ -1,6 +1,5 @@
 import { Handler } from './Handler'
 import { Message } from '../Message'
-import { Bot } from '../Bot'
 
 export class SlapHandler extends Handler {
     understands(message: Message): boolean {

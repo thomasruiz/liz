@@ -1,5 +1,4 @@
 import { Handler } from './Handler'
-import { Bot } from '../Bot'
 import { Message } from '../Message'
 
 export class SimplePingHandler extends Handler {

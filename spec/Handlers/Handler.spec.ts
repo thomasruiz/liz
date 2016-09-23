@@ -17,7 +17,7 @@ describe('Handler', () => {
         setTimeout(() => {
             expect(handler.throttled('user')).to.equal(false)
             done()
-        }, 30)
+        }, 40)
     })
 })
 

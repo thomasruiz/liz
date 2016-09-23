@@ -5,6 +5,7 @@ import { SimplePingHandler } from './Handlers/SimplePingHandler'
 import { SlapHandler } from './Handlers/SlapHandler'
 import { LizError } from './LizError'
 import IThenable = Promise.IThenable
+import { SandwichHandler } from './Handlers/SandwichHandler'
 
 export class MessageListener {
     private handlers: Handler[]
@@ -12,7 +13,8 @@ export class MessageListener {
     constructor(private bot: Bot) {
         this.handlers = [
             new SimplePingHandler(bot),
-            new SlapHandler(bot)
+            new SlapHandler(bot),
+            new SandwichHandler(bot)
         ]
     }
 
